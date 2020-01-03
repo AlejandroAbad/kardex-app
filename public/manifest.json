@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Kardex App",
+  "name": "Visualizador de datos Kardex Santomera",
   "icons": [
     {
       "src": "favicon.ico",

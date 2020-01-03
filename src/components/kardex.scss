@@ -1,0 +1,48 @@
+$font: "Consolas", monospace, sans-serif;
+$color-main:  rgb(0, 79, 182);
+$color-sec:  rgb(155, 189, 235);
+$color-highligth:  rgb(245, 209, 112);
+
+
+body {
+  font: 14px;
+  margin: 20px;
+}
+
+.BotoneraSuperior {
+  a {
+    margin-right: 10px;
+  }
+}
+
+.TablaArticulos {
+  .Row {
+    margin-bottom: 15px;
+    padding: 15px 0;
+    border: 1px solid $color-sec;
+    border-radius: 5px;
+  }
+}
+
+
+.TablaUbicaciones {
+  .Row {
+    margin-bottom: 15px;
+    padding: 15px 0;
+    border: 1px solid $color-sec;
+    border-radius: 5px;
+
+    .Articulo {
+      width: 100%;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      margin-left: 30px;
+      padding: 10px 20px;
+      border-left: 2px solid $color-highligth;
+      
+    }
+  }
+
+
+}
+
