@@ -1,26 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { Container } from 'react-bootstrap';
+import { Container, Alert } from 'react-bootstrap';
 
 
-import Articulo from './Articulo';
-import Cargando from './Cargando';
-import './kardex.scss';
+import Articulo from 'components/Articulo';
+import Cargando from 'components/Cargando';
+import 'components/kardex.scss';
 
 const TablaArticulos = (props) => {
 
     const [stock, setStock] = useState(null);
     const [error, setError] = useState(null);
+    const [currentBaseUrl, setCurrentBaseUrl] = useState(null);
+
+    if (currentBaseUrl !== props.baseUrl) {
+        setStock(null);
+        setError(null);
+        setCurrentBaseUrl(props.baseUrl);
+    }
+
 
     const fetchData = () => {
         if (stock != null || error != null) return;
-        fetch('https://cpd25.hefame.es:8123/stock', { method: "GET" })
+        fetch(currentBaseUrl + '/stock', { method: "GET" })
             .then(response => response.json())
-            .then(response =>
-                setStock(response)
-            )
-            .catch(error =>
-                setError(error)
-            );
+            .then(response => setStock(response))
+            .catch(error => {console.log(error); setError(error)});
     }
 
     useEffect(fetchData);
@@ -28,10 +32,10 @@ const TablaArticulos = (props) => {
 
     if (error) {
         return (
-            <div>
-                <h1>Error</h1>
+            <Alert variant='danger'>
+                <h4>Error</h4>
                 <pre>{JSON.stringify(error)}</pre>
-            </div>
+            </Alert>
         );
     }
 
@@ -41,14 +45,22 @@ const TablaArticulos = (props) => {
         )
     }
 
-    const lineas = [];
+    let lineas = [];
     stock.forEach( (element, index) => {
         lineas.push(<Articulo data={element} key={index} />);
     });
 
+    if (lineas.length === 0) {
+        lineas = (<Alert variant='warning'>
+            <h4>No se encontraron resultados</h4>
+            <p>Pruebe a cambiar los filtros de búsqueda</p>
+        </Alert>);
+    }
 
     return (
         <Container className="TablaArticulos">
+            <h1>Lista de artículos</h1>
+            <hr/>
             {lineas}
         </Container>
     )

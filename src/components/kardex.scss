@@ -4,9 +4,16 @@ $color-sec:  rgb(155, 189, 235);
 $color-highligth:  rgb(245, 209, 112);
 
 
-body {
-  font: 14px;
-  margin: 20px;
+.BotonFiltro { 
+  font-size: 28px;
+  float: right;
+
+  .ContadorFiltros {
+    font-size: 10px;
+    line-height: 13px;
+    min-width: 17px;
+    margin-left: -8px;
+  }
 }
 
 .BotoneraSuperior {
@@ -14,6 +21,14 @@ body {
     margin-right: 10px;
   }
 }
+
+.OptionsModal {
+  label {
+    font-weight: bold;
+  }
+}
+
+
 
 .TablaArticulos {
   .Row {

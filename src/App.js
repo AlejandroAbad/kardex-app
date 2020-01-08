@@ -1,40 +1,36 @@
 import React from 'react';
 
-import TablaArticulos from './components/TablaArticulos';
-import TablaUbicaciones from './components/TablaUbicaciones';
-import BootstrapMediaBadge from './components/BootstrapMediaBadge';
+import TablaArticulos from 'components/TablaArticulos';
+import TablaUbicaciones from 'components/TablaUbicaciones';
+import Navigation from 'components/Navigation';
+import useStateWithLocalStorage from 'util/useStateWithLocalStorage';
 
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
-import { Container, Button, ButtonToolbar } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap'
+import { Container } from 'react-bootstrap';
 
 function App() {
 
+  const [baseUrl, setBaseUrl] = useStateWithLocalStorage('baseUrl', 'https://orackardex-scan.hefame.es:8123');
 
+
+  const optionsChanged = (options) => {
+    setBaseUrl(options.baseUrl);
+  }
 
   return (
     <Router>
-      <BootstrapMediaBadge />
-      <Container>
-        <h1>Kardex Santomera</h1>
-        <hr/>
-        <ButtonToolbar className="BotoneraSuperior">
-          <LinkContainer to="/articulos"><Button>Artículos</Button></LinkContainer>
-          <LinkContainer to="/ubicaciones"><Button>Ubicaciones</Button></LinkContainer>
-        </ButtonToolbar>
-        <hr />
+      <Navigation baseUrl={baseUrl} onOptionsChanged={optionsChanged} />
       
+      <Container style={{marginTop: '80px'}}>
+        <Switch>
+          <Route path="/articulos">
+            <TablaArticulos baseUrl={baseUrl} />
+          </Route>
+          <Route path="/ubicaciones">
+            <TablaUbicaciones baseUrl={baseUrl}s />
+          </Route>
 
-      
-      <Switch>
-        <Route path="/articulos">
-          <TablaArticulos />
-        </Route>
-        <Route path="/ubicaciones">
-          <TablaUbicaciones />
-        </Route>
-
-      </Switch>
+        </Switch>
       </Container>
     </Router>
   );

@@ -5,7 +5,7 @@ import { Badge } from 'react-bootstrap';
 const BootstrapMediaBadge = () => {
 
     return (
-        <div style={{position: 'fixed', left: 0, top: 0}}>
+        <div style={{position: 'fixed', left: 0, top: 0, zIndex: 10000}}>
             <Badge variant='primary' className='d-inline-block d-sm-none'>XS</Badge>
             <Badge variant='secondary' className='d-none d-sm-inline-block d-md-none'>SM</Badge>
             <Badge variant='success' className='d-none d-md-inline-block d-lg-none'>MD</Badge>
