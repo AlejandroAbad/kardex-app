@@ -5,6 +5,7 @@ import { Container, Alert } from 'react-bootstrap';
 import Articulo from 'components/Articulo';
 import Cargando from 'components/Cargando';
 import 'components/kardex.scss';
+import ExcelArticulos from './TablaArticulos.Descargar';
 
 const TablaArticulos = (props) => {
 
@@ -46,8 +47,23 @@ const TablaArticulos = (props) => {
     }
 
     let lineas = [];
-    stock.forEach( (element, index) => {
-        lineas.push(<Articulo data={element} key={index} />);
+    let articulosExcel = [];
+    stock.forEach( (e, i) => {
+        lineas.push(<Articulo data={e} key={i} />);
+        articulosExcel.push({
+            cn: e.id,
+            name: e.name,
+            ean: e.ean,
+            stock: e.stock,
+            caducidad: e.expireDate,
+            lote: e.lot,
+            ancho_caja: e.caja.ancho,
+            profundidad_caja: e.caja.profundidad,
+            id_ubicacion: e.ubicacion.id,
+            estanteria: e.ubicacion.estanteria,
+            bandeja: e.ubicacion.bandeja,
+            posicion: e.ubicacion.posicion
+        })
     });
 
     if (lineas.length === 0) {
@@ -59,7 +75,7 @@ const TablaArticulos = (props) => {
 
     return (
         <Container className="TablaArticulos">
-            <h1>Lista de artículos</h1>
+            <h1>Lista de artículos <div className="float-right"><small><ExcelArticulos articulos={articulosExcel} /></small></div></h1>
             <hr/>
             {lineas}
         </Container>

@@ -5,6 +5,7 @@ import Ubicacion from 'components/Ubicacion';
 import Cargando from 'components/Cargando';
 import 'components/kardex.scss';
 import FiltroUbicaciones from 'components/FiltroUbicaciones';
+import ExcelUbicaciones from './TablaUbicaciones.Descargar';
 
 
 
@@ -50,30 +51,49 @@ const TablaUbicaciones = (props) => {
     }
 
 
-    let lineas = [];
-    const formatosCaja = {};
-    const tiposUbicacion = {};
+    let lineas = []
+    let ubucacionesExcel = []
+    const formatosCaja = {}
+    const tiposUbicacion = {}
 
-    stock.forEach((element, index) => {
 
-        if (!formatosCaja[element.formato.modelo]) {
-            formatosCaja[element.formato.modelo] = element.formato;
-            formatosCaja[element.formato.modelo].count = 1
+    stock.forEach((e, index) => {
+
+        if (!formatosCaja[e.formato.modelo]) {
+            formatosCaja[e.formato.modelo] = e.formato;
+            formatosCaja[e.formato.modelo].count = 1
         } else {
-            formatosCaja[element.formato.modelo].count ++;
+            formatosCaja[e.formato.modelo].count++;
         }
 
-        if (!tiposUbicacion[element.tipo]) {
-            tiposUbicacion[element.tipo] = element.tipo;
+        if (!tiposUbicacion[e.tipo]) {
+            tiposUbicacion[e.tipo] = e.tipo;
         }
 
 
         if (
-            (!filtros.formatoCaja || filtros.formatoCaja === element.formato.modelo) &&
-            (!filtros.tipoUbicacion || filtros.tipoUbicacion === element.tipo))
-        {
-            lineas.push(<Ubicacion data={element} key={index} />);
+            (!filtros.formatoCaja || filtros.formatoCaja === e.formato.modelo) &&
+            (!filtros.tipoUbicacion || filtros.tipoUbicacion === e.tipo)) {
+            lineas.push(<Ubicacion data={e} key={index} />);
         }
+
+        ubucacionesExcel.push({
+            id_ubicacion: e.id,
+            estante: e.estante,
+            bandeja: e.bandeja,
+            posicion: e.posicion,
+            offset: e.offset,
+            tipo_ubicacion: e.tipo,
+            ancho_ubicacion: e.formato.ancho,
+            profundidad_ubicacion: e.formato.profundidad,
+            arti_cn: e.articulo?.cn ?? '',
+            arti_name: e.articulo?.name ?? '',
+            arti_stock: e.articulo?.stock ?? '',
+            arti_caducidad: e.articulo?.caducidad ?? '',
+            arti_lote: e.articulo?.lote ?? '',
+            arti_caja_ancho: e.articulo?.caja?.ancho ?? '',
+            arti_caja_profundidad: e.articulo?.caja?.profundidad ?? ''
+        })
     });
 
     if (lineas.length === 0) {
@@ -84,11 +104,12 @@ const TablaUbicaciones = (props) => {
     }
 
     return (
-        
+
         <Container className="TablaUbicaciones">
             <h1>
                 Lista de ubicaciones
                 <FiltroUbicaciones onUpdate={setFiltros} filtros={filtros} formatosCaja={formatosCaja} tiposUbicacion={tiposUbicacion} />
+                <div className="float-right"><small><ExcelUbicaciones ubicaciones={ubucacionesExcel} /></small></div>
             </h1>
             <hr />
             {lineas}
